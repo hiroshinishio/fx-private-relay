@@ -94,9 +94,6 @@ class Profile(models.Model):
     sent_welcome_email = models.BooleanField(default=False)
     last_engagement = models.DateTimeField(blank=True, null=True, db_index=True)
 
-    class Meta:
-        db_table = "emails_profile"
-
     def __str__(self):
         return f"{self.user} Profile"
 
@@ -564,4 +561,3 @@ class AbuseMetrics(models.Model):
 
     class Meta:
         unique_together = ["user", "first_recorded"]
-        db_table = "emails_abusemetrics"
