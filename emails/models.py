@@ -19,17 +19,12 @@ from api.exceptions import ErrorContextType, RelayAPIException
 from privaterelay.utils import flag_is_active_in_task
 
 from .utils import get_domains_from_settings, incr_if_enabled
-from .validators import has_bad_words, is_blocklisted, valid_available_subdomain
+from .validators import has_bad_words, is_blocklisted
 
 logger = logging.getLogger("events")
 
 
 DOMAIN_CHOICES = [(1, "RELAY_FIREFOX_DOMAIN"), (2, "MOZMAIL_DOMAIN")]
-
-
-# This function is referenced in migration
-# 0024_increase_subdomain_length
-assert callable(valid_available_subdomain)  # noqa: S101 (use of assert)
 
 
 # This historical function is referenced in migration
