@@ -55,7 +55,7 @@ def _make_real_phone_with_mock_iq(phone_user, **kwargs):
     return real_phone
 
 
-@pytest.mark.django_db(transaction=True)
+@pytest.mark.django_db()
 def test_iq_endpoint_missing_verificationtoken_header():
     client = RequestsClient()
     response = client.post(INBOUND_SMS_PATH)
@@ -64,7 +64,7 @@ def test_iq_endpoint_missing_verificationtoken_header():
     assert "missing Verificationtoken header" in response_body["detail"]
 
 
-@pytest.mark.django_db(transaction=True)
+@pytest.mark.django_db()
 def test_iq_endpoint_missing_messageid_header():
     client = RequestsClient()
     client.headers.update({"Verificationtoken": "valid"})
@@ -75,7 +75,7 @@ def test_iq_endpoint_missing_messageid_header():
     assert "missing MessageId header" in response_body["detail"]
 
 
-@pytest.mark.django_db(transaction=True)
+@pytest.mark.django_db()
 def test_iq_endpoint_invalid_hash():
     message_id = "9a09df23-01f3-4e0f-adbc-2a783878a574"
     client = RequestsClient()
@@ -88,7 +88,7 @@ def test_iq_endpoint_invalid_hash():
     assert "verficiationToken != computed sha256" in response_body["detail"]
 
 
-@pytest.mark.django_db(transaction=True)
+@pytest.mark.django_db()
 def test_iq_endpoint_valid_hash_no_auth_failed_status():
     message_id = "9a09df23-01f3-4e0f-adbc-2a783878a574"
     token = compute_iq_mac(message_id)
@@ -109,7 +109,7 @@ def _prepare_valid_iq_request_client() -> RequestsClient:
     return client
 
 
-@pytest.mark.django_db(transaction=True)
+@pytest.mark.django_db()
 def test_iq_endpoint_missing_required_params():
     client = _prepare_valid_iq_request_client()
 
@@ -122,7 +122,7 @@ def test_iq_endpoint_missing_required_params():
     assert "Request missing from, to, or text" in resp_body[0]
 
 
-@pytest.mark.django_db(transaction=True)
+@pytest.mark.django_db()
 def test_iq_endpoint_unknown_number():
     unknown_number = "234567890"
     client = _prepare_valid_iq_request_client()
@@ -141,7 +141,7 @@ def test_iq_endpoint_unknown_number():
     assert "Could not find relay number." in resp_body[0]
 
 
-@pytest.mark.django_db(transaction=True)
+@pytest.mark.django_db()
 def test_iq_endpoint_disabled_number(phone_user):
     # TODO: should we return empty 200 to iQ when number is disabled?
     _make_real_phone_with_mock_iq(phone_user, verified=True)
@@ -162,7 +162,7 @@ def test_iq_endpoint_disabled_number(phone_user):
     assert resp.status_code == 200
 
 
-@pytest.mark.django_db(transaction=True)
+@pytest.mark.django_db()
 @responses.activate
 def test_iq_endpoint_success(phone_user):
     _make_real_phone_with_mock_iq(phone_user, verified=True)
@@ -189,7 +189,7 @@ def test_iq_endpoint_success(phone_user):
     assert rsp.call_count == 1
 
 
-@pytest.mark.django_db(transaction=True)
+@pytest.mark.django_db()
 @responses.activate
 def test_reply_with_no_remaining_texts(phone_user):
     real_phone = _make_real_phone_with_mock_iq(phone_user, verified=True)
@@ -219,7 +219,7 @@ def test_reply_with_no_remaining_texts(phone_user):
     assert relay_number.remaining_texts == 0
 
 
-@pytest.mark.django_db(transaction=True)
+@pytest.mark.django_db()
 @responses.activate
 def test_reply_with_no_phone_capability(phone_user):
     real_phone = _make_real_phone_with_mock_iq(phone_user, verified=True)
@@ -248,7 +248,7 @@ def test_reply_with_no_phone_capability(phone_user):
     assert rsp.call_count == 0
 
 
-@pytest.mark.django_db(transaction=True)
+@pytest.mark.django_db()
 @responses.activate
 def test_reply_without_previous_sender_error(phone_user):
     real_phone = _make_real_phone_with_mock_iq(phone_user, verified=True)
@@ -289,7 +289,7 @@ def test_reply_without_previous_sender_error(phone_user):
     assert rsp.call_count == 1
 
 
-@pytest.mark.django_db(transaction=True)
+@pytest.mark.django_db()
 @responses.activate
 def test_reply_with_previous_sender_works(phone_user):
     real_phone = _make_real_phone_with_mock_iq(phone_user, verified=True)
