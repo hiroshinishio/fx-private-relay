@@ -11,9 +11,9 @@ import pytest
 from allauth.socialaccount.models import SocialAccount
 from botocore.exceptions import ClientError
 
-from emails.models import Profile
-from emails.tests.models_tests import make_free_test_user
 from privaterelay.ftl_bundles import main as ftl_bundle
+from privaterelay.models import Profile
+from privaterelay.tests.utils import make_free_test_user
 
 COMMAND_NAME = "send_welcome_emails"
 

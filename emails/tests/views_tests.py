@@ -27,7 +27,6 @@ from model_bakery import baker
 from emails.models import (
     DeletedAddress,
     DomainAddress,
-    Profile,
     RelayAddress,
     Reply,
     address_hash,
@@ -61,13 +60,11 @@ from emails.views import (
 )
 from privaterelay.ftl_bundles import main
 from privaterelay.glean.server_events import GLEAN_EVENT_MOZLOG_TYPE as GLEAN_LOG
+from privaterelay.models import Profile
 from privaterelay.tests.utils import (
     create_expected_glean_event,
     get_glean_event,
     log_extra,
-)
-
-from .models_tests import (
     make_free_test_user,
     make_premium_test_user,
     upgrade_test_user_to_premium,

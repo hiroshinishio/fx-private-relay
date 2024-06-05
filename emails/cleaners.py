@@ -6,9 +6,10 @@ from django.contrib.auth.models import User
 from django.db.models import Count, Q
 
 from privaterelay.cleaners import CleanerTask, CleanupData, Counts
+from privaterelay.models import Profile
+from privaterelay.signals import create_user_profile
 
-from .models import DomainAddress, Profile, RelayAddress
-from .signals import create_user_profile
+from .models import DomainAddress, RelayAddress
 
 
 class ServerStorageCleaner(CleanerTask):

@@ -59,9 +59,6 @@ class EmailsConfig(AppConfig):
                 terms.append(word.strip())
         return terms
 
-    def ready(self):
-        import emails.signals  # noqa: F401 (imported but unused warning)
-
 
 def emails_config() -> EmailsConfig:
     emails_config = apps.get_app_config("emails")

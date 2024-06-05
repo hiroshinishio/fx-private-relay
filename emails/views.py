@@ -35,6 +35,7 @@ from sentry_sdk import capture_message
 from waffle import sample_is_active
 
 from privaterelay.ftl_bundles import main as ftl_bundle
+from privaterelay.models import Profile
 from privaterelay.utils import (
     flag_is_active_in_task,
     get_subplat_upgrade_link_by_language,
@@ -45,7 +46,6 @@ from .models import (
     CannotMakeAddressException,
     DeletedAddress,
     DomainAddress,
-    Profile,
     RelayAddress,
     Reply,
     address_hash,
@@ -1379,7 +1379,7 @@ def _get_domain_address(local_portion: str, domain_portion: str) -> DomainAddres
                 # was unable to receive an email due to user no longer being a
                 # premium user as seen in exception thrown on make_domain_address
                 domain_address = DomainAddress.make_domain_address(
-                    locked_profile, local_portion, True
+                    locked_profile.user, local_portion, True
                 )
                 glean_logger().log_email_mask_created(
                     mask=domain_address,
