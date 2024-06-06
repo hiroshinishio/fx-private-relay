@@ -27,10 +27,14 @@ def add_view_forward_func(apps, schema_editor):
 
 
 def rm_view_reverse_func(apps, schema_editor):
-    schema_editor.execute('DROP TABLE IF EXISTS "emails_profile";')
-    schema_editor.execute('DROP TABLE IF EXISTS "emails_abusemetrics";')
-    schema_editor.execute('DROP VIEW IF EXISTS "emails_profile";')
-    schema_editor.execute('DROP VIEW IF EXISTS "emails_abusemetrics";')
+    if schema_editor.connection.vendor.startswith("postgres"):
+        schema_editor.execute('DROP VIEW IF EXISTS "emails_profile";')
+        schema_editor.execute('DROP VIEW IF EXISTS "emails_abusemetrics";')
+    elif schema_editor.connection.vendor.startswith("sqlite"):
+        schema_editor.execute('DROP TABLE IF EXISTS "emails_profile";')
+        schema_editor.execute('DROP TABLE IF EXISTS "emails_abusemetrics";')
+    else:
+        raise Exception(f"Unknown vendor {schema_editor.connection.vendor=}")
 
 
 class Migration(migrations.Migration):
