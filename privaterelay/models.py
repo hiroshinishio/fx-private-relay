@@ -94,6 +94,9 @@ class Profile(models.Model):
     sent_welcome_email = models.BooleanField(default=False)
     last_engagement = models.DateTimeField(blank=True, null=True, db_index=True)
 
+    class Meta:
+        db_table = "emails_profile"
+
     def __str__(self):
         return f"{self.user} Profile"
 
@@ -560,4 +563,5 @@ class AbuseMetrics(models.Model):
     forwarded_email_size_per_day = models.PositiveBigIntegerField(default=0)
 
     class Meta:
+        db_table = "emails_abusemetrics"
         unique_together = ["user", "first_recorded"]
